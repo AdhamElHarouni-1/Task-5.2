@@ -1,21 +1,13 @@
 import express from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
-import helmet from 'helmet';
-import csp from '../../shared/csp.cjs';
 import authRoutes from './routes/auth.js';
 import listingRoutes from './routes/listings.js';
 import userRoutes from './routes/users.js';
 import reviewRoutes from './routes/reviews.js';
 
 const app = express();
-const { cspDirectives } = csp;
 
-app.use(helmet({
-  contentSecurityPolicy: {
-    directives: cspDirectives,
-  },
-}));
 app.use(morgan('dev'));
 app.use(cors({ origin: 'http://localhost:5175', credentials: false }));
 app.use(express.json());

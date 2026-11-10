@@ -1,29 +1,8 @@
-import DOMPurify from 'dompurify';
-
-// Reviews support simple formatting, not arbitrary HTML. Keep the allowlist
-// narrow so scripts, event handlers, embedded content, and unsafe attributes
-// are removed at the HTML rendering boundary.
-const reviewHtmlOptions = {
-  ALLOWED_TAGS: [
-    'a',
-    'b',
-    'blockquote',
-    'br',
-    'code',
-    'del',
-    'em',
-    'i',
-    'li',
-    'ol',
-    'p',
-    'strong',
-    'u',
-    'ul',
-  ],
-  ALLOWED_ATTR: ['href', 'title'],
-  ALLOW_DATA_ATTR: false,
-  ALLOW_ARIA_ATTR: false,
-};
-
-export const sanitizeHtml = (dirty) =>
-  DOMPurify.sanitize(typeof dirty === 'string' ? dirty : '', reviewHtmlOptions);
+// Reviews are rendered as HTML so people can use light formatting (bold, links).
+// This helper is the single place review HTML passes through before it is handed
+// to React's dangerouslySetInnerHTML.
+//
+// TODO (security): right now this returns the HTML untouched, so whatever a
+// reviewer typed — including <script> and onerror handlers — is injected into
+// every viewer's page. Make this strip dangerous markup before it is rendered.
+export const sanitizeHtml = (dirty) => dirty;
